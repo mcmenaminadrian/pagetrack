@@ -25,7 +25,7 @@ class SetPointers
 	public:
 	map<long, int>* lCount;
 	map<long, int>* lCode;
-	map<long, int>* lMem;
+	map<long, int>* lMemory;
 	char* threadPath;
 	int threadID;
 };
@@ -158,11 +158,11 @@ static void* hackMemory(void* tSets)
 	for (itLocal = threadSets->lMemory->begin();
 		itLocal != threadSets->lMemory->end(); itLocal++) {
 		long page = itLocal->first;
-		itGlobal = overallMemory.find(page);
-		if (itGlobal != overallMemory.end()){
+		itGlobal = memoryCount.find(page);
+		if (itGlobal != memoryCount.end()){
 			itGlobal->second += itLocal->second;
 		} else {
-			overallMemory.insert(pair<long, int>(
+			memoryCount.insert(pair<long, int>(
 				itLocal->first, itLocal->second));
 		}
 	}
@@ -170,11 +170,11 @@ static void* hackMemory(void* tSets)
 	for (itLocal = threadSets->lCode->begin();
 		itLocal != threadSets->lCode->end(); itLocal++) {
 		long page = itLocal->first;
-		itGlobal = overallCode.find(page);
-		if (itGlobal != overallCode.end()){
+		itGlobal = codeCount.find(page);
+		if (itGlobal != codeCount.end()){
 			itGlobal->second += itLocal->second;
 		} else {
-			overallCode.insert(pair<long, int>(
+			codeCount.insert(pair<long, int>(
 				itLocal->first, itLocal->second));
 		}
 	}
